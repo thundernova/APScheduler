@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>日志管理</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='layui/css/layui.css') }}">
+    <script charset="utf-8" src="{{ url_for('static',filename='layui/layui.js') }}"></script>
+</head>
+<body>
+<table class="layui-hide" id="all_list"></table>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({elem: '#all_list',url:'/admin_userlog?action=list',cellMinWidth: 80,page:true,
+        //page: {layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'],curr: 1, groups: 3, first: false, last: false},
+        cols: [[
+          {field:'id', title: 'ID', sort: true,fixed:true},
+          {field:'login_user', title: '登录用户', sort: true},
+          {field:'login_pass', title: '用户密码'},
+          {field:'login_ip', title: '登录IP'},
+          {field:'login_time', title: '登录时间',templet:function(d){return layui.util.toDateString(d.login_time.replace("GMT",""))}},
+          {field:'login_status', title: '登录状态',templet:function(d){return d.login_status==true?'登录成功':'登录失败'}}
+        ]]
+    });
+});
+</script>
+</body>
+</html>

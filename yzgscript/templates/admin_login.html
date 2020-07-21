@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>后台登录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/login.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='layui/layui.js') }}" charset="utf-8"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+		<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+		<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="cms_login">
+<div class="cms_login_container">
+	<div class="cms_login_text">用户登录</div>
+	<div class="cms_login_table">
+        <form class="layui-form" method="post" id="formSubmit">
+            <input type="hidden" id="csrf_token" value="{{ csrf_token() }}" />
+			<div class="divBox">
+                <span class="margin_right10">账&nbsp;&nbsp;&nbsp;&nbsp;号</span>
+				<input id="username" lay-verify="username" type="text" placeholder="请输入账号" class="cms_login_ipt" value="admin">
+            </div>
+			<div class="divBox">
+                <span class="margin_right10">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+				<input id="password" lay-verify="password" type="password" placeholder="请输入密码" class="cms_login_ipt" value="admin888">
+            </div>
+			<div class="divBox">
+                <span class="margin_right10">验证码</span>
+				<input id="validcode" type="text" placeholder="请输入验证码" class="cms_login_validcode">
+				<img id="valid_img" class="valid_img" src="/getvalid" alt="">
+            </div>
+            <div class="divInfo">
+				<div id="login_info"></div>
+			</div>
+			<div class="divBox margin_top">
+				<button class="login_btn" lay-submit="">登录</button>
+			</div>
+		</form>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+    layui.use(['form', 'layer','jquery'],function() {
+        $ = layui.jquery;
+        var form = layui.form, layer = layui.layer;
+        form.verify({
+            username: [/(.+){1}$/, '账号不能为空!'],
+            password: [/(.+){1}$/, '密码不能为空!'],
+		});
+    	$("#valid_img").click(function () {
+        	$(this).attr("src", "/getvalid?" + Math.random());
+    	})
+        $('#formSubmit').submit(function (event) {
+            var csrf_token = $("#csrf_token").val();
+            var username=$("#username").val();
+            var password=$("#password").val();
+            var validcode=$("#validcode").val();
+            $.ajax({type: "POST",url: "/login",data: {csrf_token:csrf_token,username:username,password:password,validcode:validcode},
+                success: function (data) {
+                    if (data.msg=='200') {
+                        location.href = data.info;
+                    } else {
+                        $("#valid_img").trigger("click");
+                        document.getElementById("login_info").innerHTML=data.info;
+                    }
+                }
+            });
+           return false;
+        });
+    });
+</script>
+</body>
+</html>

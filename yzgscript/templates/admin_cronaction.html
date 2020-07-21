@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/xadmin.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='layui/layui.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/xadmin.js') }}"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" method="post" id="formSubmit">
+            <div class="layui-fluid">
+                <div class="layui-card-body ">
+                    <table class="layui-table">
+                        <tbody>
+                            <input type="hidden" id="csrf_token" value="{{ csrf_token() }}" />
+                            <input type="hidden" id="action" {% if data is defined %} value="{{ data.action }}" {% endif %} />
+                            <tr>
+                                <th class="layui-table-th">任务名称</th><td>
+                                    <input type="text" id="L_input1" lay-verify="input_id" class="layui-input"
+                                            {% if data is defined and data.action == 'edit' %} value="{{ data.info[0]['id'] }}" {% endif %}>
+                            </td></tr>
+                            <tr>
+                                <th class="layui-table-th">可执行命令</th><td>
+                                    <input type="text" id="L_input2" lay-verify="input_cmd" class="layui-input"
+                                            {% if data is defined and data.action == 'edit' %} value="{{ data.info[0]['cmd'] }}" {% endif %}>
+                            </td></tr>
+                            <tr>
+                                <th class="layui-table-th">任务定时器</th><td>
+                                    <div>示例：*/10 * * * * *，其值分别对应(秒、分、时、日、月、周)</div>
+                                    <input type="text" id="L_input3" lay-verify="input_cron" class="layui-input"
+                                            {% if data is defined and data.action == 'edit' %} value="{{ data.info[0]['cron'] }}" {% endif %}>
+                            </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <button class="layui-btn" lay-filter="add" lay-submit="">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layer','jquery'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form, layer = layui.layer;
+        form.verify({
+            input_id: [/(.+){1}$/, '任务名称不得小于1位'],
+            input_cmd: [/(.+){1}$/, '可执行命令不得小于1位'],
+            input_cron: [/(.+){6}$/, '任务定时器不得小于6位'],
+        });
+        $('#formSubmit').submit(function (event) {
+            $.ajax({url: "/admin_cronaction",type: "POST",dataType:'json',data: {
+                    csrf_token: $("#csrf_token").val(),
+                    action:$("#action").val(),
+                    id:$("#L_input1").val(),
+                    cmd:$("#L_input2").val(),
+                    cron:$("#L_input3").val()
+                },success: function (data) {
+                    layer.alert(data['msg'], {icon: 6},function() {xadmin.close();xadmin.father_reload();});
+                }
+            });
+           return false;
+        });
+    });
+</script>
+</body>
+</html>

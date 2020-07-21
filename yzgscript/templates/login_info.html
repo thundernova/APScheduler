@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/font.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/xadmin.css') }}">
+        <script type="application/javascript" src="{{ url_for('static',filename='layui/layui.js') }}"></script>
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">
+                                欢迎登录：<span class="x-red" id="loginuser"></span>，
+                                当前时间：<span id="showtime"></span>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">用户信息</div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table">
+                                <tbody>
+                                    <tr>
+                                        <th class="layui-table-th">账号</th>
+                                        <td id="tdloginuser"></td></tr>
+                                    <tr>
+                                        <th>账号权限</th>
+                                        <td id="user_privilege">
+                                        </td></tr>
+                                    <tr>
+                                        <th>最后一次成功登录IP</th>
+                                        <td id="success_ip"></td></tr>
+                                    <tr>
+                                        <th>最后一次成功登录时间</th>
+                                        <td id="success_time"></td></tr>
+                                    <tr>
+                                    <tr>
+                                        <th>最后一次失败登录IP</th>
+                                        <td id="failed_ip"></td></tr>
+                                    <tr>
+                                        <th>最后一次失败登录时间</th>
+                                        <td id="failed_time"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <style id="welcome_style"></style>
+             </div>
+        </div>
+        </div>
+    <script>
+        function showtimes(){
+            var week,date_time = new Date();
+            switch (date_time.getDay()){
+                 case 1: week="星期一"; break;
+                 case 2: week="星期二"; break;
+                 case 3: week="星期三"; break;
+                 case 4: week="星期四"; break;
+                 case 5: week="星期五"; break;
+                 case 6: week="星期六"; break;
+                 default:week="星期天"; break;
+            }
+            var year = date_time.getFullYear();
+            var month = date_time.getMonth()+1;
+            if(month<10){ month="0"+month; }
+            var day = date_time.getDate();
+            if(day<10){ day="0"+day; }
+            var hours =date_time.getHours();
+            if(hours<10){ hours="0"+hours; }
+            var minutes =date_time.getMinutes();
+            if(minutes<10){ minutes="0"+minutes; }
+            var seconds=date_time.getSeconds();
+            if(seconds<10){ seconds="0"+seconds; }
+            var date_str = year+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds+" "+week;
+            document.getElementById("showtime").innerHTML= date_str;
+        }
+        setInterval("showtimes()",500); //设置半秒调用一次showtimes函数
+        layui.use('layer', function(){
+            var $=layui.$,layer=layui.layer;
+            $.ajax({type: "get",url: "/login_info?action=list",async:false,
+                success: function (data) {
+                    if (data.msg=='200') {
+                        document.getElementById("loginuser").innerHTML=data.login_user;
+                        document.getElementById("tdloginuser").innerHTML=data.login_user;
+                        if (data.user_privilege==false){
+                            document.getElementById("user_privilege").innerHTML='管理员';
+                        }else{
+                            document.getElementById("user_privilege").innerHTML='超级管理员';
+                        }
+                        document.getElementById("success_ip").innerHTML=data.success_ip;
+                        document.getElementById("success_time").innerHTML=data.success_time;
+                        document.getElementById("failed_ip").innerHTML=data.failed_ip;
+                        document.getElementById("failed_time").innerHTML=data.failed_time;
+                    } else {
+                        layer.alert('获取数据异常!!!')
+                    }
+                }
+            });
+        });
+    </script>
+    </body>
+</html>

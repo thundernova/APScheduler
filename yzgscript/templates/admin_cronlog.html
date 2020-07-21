@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/font.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/xadmin.css') }}">
+    <script src="{{ url_for('static',filename='layui/layui.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/xadmin.js') }}"></script>
+</head>
+<body>
+<div class="x-nav">
+    <div class="layui-inline">
+      <input class="layui-input" placeholder="请输入任务名称" id="ReloadName" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i></button>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+    <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<table class="layui-table" id="LAY_table_user" lay-data="{cellMinWidth:80, url:'/admin_cronlog?action=list', page:true, id:'datalist_table'}" lay-filter="demo">
+  <thead>
+    <tr>
+      <th lay-data="{field:'id', width:'5%',fixed: true}">ID</th>
+      <th lay-data="{field:'task_id'}">调度名称</th>
+      <th lay-data="{field:'task_time', width:'14%', templet:function(d){return layui.util.toDateString(d.task_time.replace('GMT',''))}}">操作时间</th>
+      <th lay-data="{field:'task_status',width:'8%',align:'center',sort:true,templet:function(d){return d.task_status==true?'成功':'失败'}}">调度结果</th>
+      <th lay-data="{fixed: 'right', width:'8%',align:'center',toolbar: '#opbar'}">操作</th>
+    </tr>
+  </thead>
+</table>
+<script type="text/html" id="opbar">
+  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详细</a>
+</script>
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  table.on('tool(demo)', function(obj){
+    var data = obj.data;
+    if (obj.event == 'detail') {
+        data['action']='detail'
+        xadmin.open('查看','/admin_cronlogaction?action=view&dataid='+data.id,800,600)
+        return true;
+    }
+  });
+  var $ = layui.$, active = {
+    reload: function(){  //执行重载
+      var ReloadName = $('#ReloadName');
+      table.reload('datalist_table', {page: {curr: 1},where: { reloadname: ReloadName.val() }}, 'data');
+    }
+  };
+  $('.x-nav .layui-btn').on('click', function(){
+    var type = $(this).data('type');
+    active[type] ? active[type].call(this) : '';
+  });
+});
+</script>
+</body>
+</html>

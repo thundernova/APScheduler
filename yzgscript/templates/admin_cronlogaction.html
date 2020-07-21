@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>新增/修改</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/xadmin.css') }}">
+    <script src="{{ url_for('static',filename='layui/layui.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/xadmin.js') }}"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-fluid">
+            <div class="layui-card-body ">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th class="layui-table-th" style="width: 10px">调度名称</th><td>
+                            {% if data_info is defined %}
+                                {{ data_info.task_id }}
+                            {% endif %}
+                        </td></tr>
+                        <tr>
+                            <th class="layui-table-th" style="width: 10px">调度时间</th><td>
+                            {% if data_info is defined %}
+                                {{ data_info.task_time }}
+                            {% endif %}
+                        </td></tr>
+                        <tr>
+                            <th class="layui-table-th" style="width: 10px">调度命令</th><td>
+                            {% if data_info is defined %}
+                                {{ data_info.task_cmd }}
+                            {% endif %}
+                        </td></tr>
+                        <tr>
+                            <th class="layui-table-th" style="width: 10px">调度结果</th><td>
+                            {% if data_info is defined %}
+                                {% if data_info.task_status %}成功{% else %}失败{% endif %}
+                            {% endif %}
+                        </td></tr>
+                        <tr>
+                            <th class="layui-table-th" style="width: 10px">执行结果</th><td>
+                            {% if data_info is defined %}
+                                {{ data_info.task_stdout }}
+                            {% endif %}
+                        </td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

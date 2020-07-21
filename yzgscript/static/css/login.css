@@ -1,0 +1,92 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+html,
+body {
+	width: 100%;
+	height: 100%;
+}
+.cms_login {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.cms_login_container {
+	width: 600px;
+	height: 360px;
+	border-radius: 10px;
+	border: 1px solid #ccc;
+	box-shadow: 0px 0px 10px #ccc;
+	background-color: #fff;
+	margin: auto;
+	opacity: 0.8;
+}
+.cms_login_text {
+	height: 80px;
+	width: 100%;
+	font-size: 30px;
+	line-height: 90px;
+	text-align: center;
+}
+.cms_login_table {
+	font-size: 18px;
+}
+/* 统一盒子样式 */
+.divBox {
+	height: 50px;
+	width: 100%;
+	line-height: 50px;
+	text-align: center;
+}
+.divInfo {
+	height: 1px;
+	width: 100%;
+	line-height: 50px;
+	text-align: center;
+	color: red;
+}
+.cms_login_ipt {
+	height: 30px;
+	width: 290px;
+	padding-left: 5px;
+	border-radius: 5px;
+	outline: none;
+}
+.cms_login_validcode {
+	height: 30px;
+	width: 180px;
+	padding-left: 5px;
+	border-radius: 5px;
+	outline: none;
+}
+.valid_img {
+	height: 30px;
+	width: 100px;
+	vertical-align:middle;
+}
+input:focus {
+	border-radius: 5px;
+	outline: none;
+	border: 2px solid #66afe9;
+	box-shadow: inset 0 2px 2px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+.margin_right10 {
+	margin-right: 10px;
+}
+.margin_top {
+	margin-top: 50px;
+}
+.login_btn {
+	width: 360px;
+	height: 100%;
+	background-color: #009688;
+	border-radius: 10px;
+	outline: none;
+	font-size: 24px;
+	color: white;
+	letter-spacing: 24px;
+}

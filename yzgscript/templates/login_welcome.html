@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/xadmin.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='layui/layui.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/xadmin.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/echarts.min.js') }}"></script>
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">数据统计</div>
+                    <div class="layui-card-body ">
+                        <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                            <li class="layui-col-md2 layui-col-xs6">
+                                <a href="javascript:;" class="x-admin-backlog-body">
+                                    <h3>用户数</h3>
+                                    <p><cite><span id="users"></span></cite></p>
+                                </a>
+                            </li>
+                            <li class="layui-col-md2 layui-col-xs6">
+                                <a href="javascript:;" class="x-admin-backlog-body">
+                                    <h3>登录次数</h3>
+                                    <p><cite><span id="logins"></span></cite></p>
+                                </a>
+                            </li>
+                            <li class="layui-col-md2 layui-col-xs6">
+                                <a href="javascript:;" class="x-admin-backlog-body">
+                                    <h3>任务调度数</h3>
+                                    <p><cite><span id="ops"></span></cite></p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">任务调度数</div>
+                    <div class="layui-card-body" style="min-height: 280px;">
+                        <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+        <style id="welcome_style"></style>
+        <div class="layui-col-md12">
+            <blockquote class="layui-elem-quote layui-quote-nm">本系统基于<a href="http://x.xuebingsi.com/" target="_blank">X-ADMIN</a>构建</blockquote></div>
+        </div>
+    </div>
+    </div>
+<script type="text/javascript">
+    function getnewDay(day){
+        this.dateArray=[];
+        var myDate = new Date(); //获取今天日期
+        myDate.setDate(myDate.getDate() - day);
+        for (var i = 0; i < day+1; i++) {
+            this.dateArray.push((myDate.getMonth()+1)+"-"+myDate.getDate());
+            myDate.setDate(myDate.getDate() + 1);
+        }
+        return this.dateArray    {#返回echarts的横坐标时间 #}
+    }
+    var myChart = echarts.init(document.getElementById('main1'));
+    var option = {
+        tooltip : {trigger: 'axis',axisPointer: {type: 'cross',label: {backgroundColor: '#6a7985'}}},
+        grid: {top: '5%',right: '2%',left: '1%',bottom: '10%',containLabel: true},
+        xAxis : [{type : 'category',boundaryGap : false,data : getnewDay(7)}],
+        yAxis : [{type : 'value'}],
+        {#series: [{name:'aaaa',type:'line',areaStyle: {normal: {}},data:[120, 132, 101, 134, 90, 230, 210, 333],smooth: true}]#}
+        series : []
+    };
+    myChart.setOption(option);
+    layui.use('layer', function(){
+        var $=layui.$,layer=layui.layer,series_data=[];
+        $.ajax({type:'GET',async:false,url:'/login_welcome?action=8',
+            success:function (data) {
+                if (data.msg=='200') {
+                    document.getElementById("users").innerHTML=data.users;
+                    document.getElementById("logins").innerHTML=data.logins;
+                    document.getElementById("ops").innerHTML=data.ops;
+                    for(var i=0;i<data.my_charts.length;i++){
+                        series_data[i]={name:data.my_charts[i]['name'],type:'line',areaStyle: {normal: {}},data:data.my_charts[i]['value'],smooth: true};
+                    }
+                    {#拼接为series格式数据#}
+                    myChart.setOption({series: series_data});
+                }else{
+                    layer.alert('获取数据异常!!!')
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
