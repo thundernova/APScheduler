@@ -36,22 +36,22 @@ pip install -i https://mirrors.aliyun.com/pypi/simple APScheduler==3.6.3 Flask-A
 
 
 
-Jenkins的Dockerfile配置：  
-JKPROJECT=opadmin  
-REPOSITORY=registry-vpc.cn-hangzhou.aliyuncs.com  
-NAMESPACE="xxxx"  
-REP_USER='xxxx'  
-REP_PASS='xxx'  
-echo $REP_PASS|docker login --username=$REP_USER --password-stdin $REPOSITORY  
-cat > Dockerfile << EOF  
-FROM $REPOSITORY/$NAMESPACE/base:uwsgi-flask  
-ENV FLASK_ENV="pro"  
-ADD uwsgi.ini /etc/  
-ADD nginx.conf /etc/nginx/conf.d/  
-ADD manager.py /var/www/html/  
-ADD yzgscript  /var/www/html/yzgscript  
-RUN pip3 install --no-cache-dir --default-time=4000 -i http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com redis redis-py-cluster email xlwt xlrd elasticsearch XlsxWriter  
-EOF  
-docker build -t $REPOSITORY/$NAMESPACE/$JKPROJECT:latest .  
-docker push $REPOSITORY/$NAMESPACE/$JKPROJECT:latest  
-docker rmi $REPOSITORY/$NAMESPACE/$JKPROJECT:latest  
+
+截图1：
+![截图1](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/1.png)
+截图2：
+![截图2](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/2.png)
+截图3：
+![截图3](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/3.png)
+截图4：
+![截图4](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/4.png)
+截图5：
+![截图5](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/5.png)
+截图6：
+![截图6](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/6.png)
+截图7：
+![截图7](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/7.png)
+截图8：
+![截图8](https://raw.githubusercontent.com/wameide007/APScheduler/master/Demo_Image/8.png)
+
+
