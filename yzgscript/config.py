@@ -26,6 +26,7 @@ class Config:
     SCHEDULER_JOB_DEFAULTS = {
         'coalesce': False, 'max_instances': 5
     }
+    SCHEDULER_TIMEZONE = 'Asia/Shanghai'
     SCHEDULER_API_ENABLED = True
 
     MAX_CONTENT_LENGTH = 8 * 1024 * 1024
