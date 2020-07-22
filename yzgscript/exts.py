@@ -2,10 +2,11 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from flask_apscheduler import APScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 db = SQLAlchemy()
 migrate=Migrate()
-scheduler=APScheduler()
+scheduler=APScheduler(BackgroundScheduler(timezone="Asia/Shanghai"))
 
 # 初始化扩展库
 def init_ext(app):
