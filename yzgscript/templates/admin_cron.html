@@ -39,7 +39,7 @@
 <script type="text/html" id="switchStatus">
 {% raw %}
   <input type="checkbox" name="status" value="{{d.id}}" lay-skin="switch" lay-text="正常|暂停" lay-filter="ChangeStatus"
-           {{ d.code == 'running' ? 'checked' : '' }}>
+           {{ d.status == 'running' ? 'checked' : '' }}>
 {% endraw %}
 </script>
 <script>
