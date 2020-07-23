@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html class="x-admin-sm">
     <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面</title>
         <link rel="stylesheet" href="{{ url_for('static',filename='css/font.css') }}">
         <link rel="stylesheet" href="{{ url_for('static',filename='css/xadmin.css') }}">
         <script type="application/javascript" src="{{ url_for('static',filename='layui/layui.js') }}"></script>
@@ -84,7 +86,7 @@
             var $=layui.$,layer=layui.layer;
             $.ajax({type: "get",url: "/login_info?action=list",async:false,
                 success: function (data) {
-                    if (data.msg=='200') {
+                    if (data.code=='200') {
                         document.getElementById("loginuser").innerHTML=data.login_user;
                         document.getElementById("tdloginuser").innerHTML=data.login_user;
                         if (data.user_privilege==false){

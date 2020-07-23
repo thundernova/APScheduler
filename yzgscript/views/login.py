@@ -26,16 +26,16 @@ def login():
                 db.session.commit()
                 session['loginuser']=loginuser.username
                 session['loginpri']=loginuser.is_superuser
-                data = {'msg': '200', 'info': '/login_index'}
+                response = {'code': '200', 'msg': '/login_index'}
             else:
                 login_failed=admin_login_log(login_user=username,login_pass=password,login_ip=request.remote_addr,login_status=False)
                 db.session.add(login_failed)
                 db.session.commit()
-                data = {'msg': '500', 'info': '登录失败!!!'}
+                response = {'code': '500', 'msg': '登录失败!!!'}
         else:
-            data = {'msg': '500', 'info': '验证码错误!!!'}
+            response = {'code': '500', 'msg': '验证码错误!!!'}
         session["verifycode"]=''
-        return data
+        return response
     else:
         return render_template('admin_login.html')
 
@@ -64,14 +64,14 @@ def login_info():
             failed_time=str(login_failed.login_time)
         else:
             failed_ip = failed_time = 'None'
-        data={'msg': '200',
+        response={'code': '200',
               'login_user':login_user,
               'user_privilege':session['loginpri'],
               'success_ip':login_success.login_ip,
               'success_time':str(login_success.login_time),
               'failed_ip':failed_ip,
               'failed_time':failed_time}
-        return jsonify(data)
+        return response
     else:
         return render_template('login_info.html')
 
@@ -100,8 +100,8 @@ def login_welcome():
             mychart_name='成功' if charts_name[i].task_status==True else '失败'
             my_chart={"name":mychart_name,"value":charts_data}  #将名称和最近N天的列表存成类似{"name":'PV',"value":[20,32,11,14,90,30,20,32]}的字典。
             my_charts.append(my_chart)  #将所有操作类型的字典结果再存成列表。
-        data={"msg":200,"users":users,"logins":logins,"ops":ops,"my_charts":my_charts}
-        return jsonify(data)
+        response={"code":200,"users":users,"logins":logins,"ops":ops,"my_charts":my_charts}
+        return response
     else:
         return render_template("login_welcome.html")
 

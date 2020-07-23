@@ -7,7 +7,7 @@ def is_login(func):
     def inner(*args, **kwargs):  #从session获取用户信息，如果有，则用户已登录，否则没有登录
         loginuser = session.get('loginuser')
         if not loginuser:
-            return redirect(url_for('op_login.login'))
+            return redirect(url_for('blue_login.login'))
         return func(*args, **kwargs)
     return inner
 

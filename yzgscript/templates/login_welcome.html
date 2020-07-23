@@ -30,7 +30,7 @@
                             </li>
                             <li class="layui-col-md2 layui-col-xs6">
                                 <a href="javascript:;" class="x-admin-backlog-body">
-                                    <h3>任务调度数</h3>
+                                    <h3>操作业务数</h3>
                                     <p><cite><span id="ops"></span></cite></p>
                                 </a>
                             </li>
@@ -40,7 +40,7 @@
             </div>
             <div class="layui-col-sm12 layui-col-md12">
                 <div class="layui-card">
-                    <div class="layui-card-header">任务调度数</div>
+                    <div class="layui-card-header">业务操作数</div>
                     <div class="layui-card-body" style="min-height: 280px;">
                         <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
                     </div>
@@ -77,7 +77,7 @@
         var $=layui.$,layer=layui.layer,series_data=[];
         $.ajax({type:'GET',async:false,url:'/login_welcome?action=8',
             success:function (data) {
-                if (data.msg=='200') {
+                if (data.code=='200') {
                     document.getElementById("users").innerHTML=data.users;
                     document.getElementById("logins").innerHTML=data.logins;
                     document.getElementById("ops").innerHTML=data.ops;

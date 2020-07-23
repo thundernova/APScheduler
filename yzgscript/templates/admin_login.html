@@ -27,7 +27,7 @@
             </div>
 			<div class="divBox">
                 <span class="margin_right10">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-				<input id="password" lay-verify="password" type="password" placeholder="请输入密码" class="cms_login_ipt" value="admin888">
+				<input id="password" lay-verify="password" type="password" placeholder="请输入密码" class="cms_login_ipt" value="adminiii">
             </div>
 			<div class="divBox">
                 <span class="margin_right10">验证码</span>
@@ -56,17 +56,18 @@
         	$(this).attr("src", "/getvalid?" + Math.random());
     	})
         $('#formSubmit').submit(function (event) {
-            var csrf_token = $("#csrf_token").val();
-            var username=$("#username").val();
-            var password=$("#password").val();
-            var validcode=$("#validcode").val();
-            $.ajax({type: "POST",url: "/login",data: {csrf_token:csrf_token,username:username,password:password,validcode:validcode},
-                success: function (data) {
-                    if (data.msg=='200') {
-                        location.href = data.info;
+            $.ajax({type: "POST",url: "/login",data: {
+                    csrf_token:$("#csrf_token").val(),
+                    username:$("#username").val(),
+                    password:$("#password").val(),
+                    validcode:$("#validcode").val()
+                },success: function (data) {
+                    console.log(data)
+                    if (data.code=='200') {
+                        location.href = data.msg;
                     } else {
                         $("#valid_img").trigger("click");
-                        document.getElementById("login_info").innerHTML=data.info;
+                        document.getElementById("login_info").innerHTML=data.msg;
                     }
                 }
             });

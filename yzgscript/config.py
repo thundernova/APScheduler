@@ -1,5 +1,6 @@
 import os
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
@@ -58,6 +59,24 @@ class DEV(Config):
         ))
     }
 
+class TEST(Config):
+    DEBUG = True
+    DB_INFO={
+        'user':'root',
+        'pass':'123456',
+        'host':'172.16.0.252',
+        'port':3306,
+        'db':'yzgscript'
+    }
+    SQLALCHEMY_DATABASE_URI= 'mysql://%s:%s@%s:%s/%s?charset=utf8' %(
+        DB_INFO['user'],DB_INFO['pass'],DB_INFO['host'],DB_INFO['port'],DB_INFO['db']
+    )
+    SCHEDULER_JOBSTORES = {
+        'default': SQLAlchemyJobStore(url='mysql+pymysql://%s:%s@%s:%s/%s?charset=utf8' %(
+            DB_INFO['user'],DB_INFO['pass'],DB_INFO['host'],DB_INFO['port'],DB_INFO['db']
+        ))
+    }
+
 class PRO(Config):
     DB_INFO={
         'user':'root',
@@ -75,4 +94,4 @@ class PRO(Config):
         ))
     }
 
-config = { 'dev': DEV,'pro': PRO,'default': DEV }
+config = { 'dev': DEV,'test': TEST,'pro': PRO,'default': DEV }
